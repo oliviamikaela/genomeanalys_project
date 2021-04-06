@@ -1,0 +1,10 @@
+%github 
+
+git add <filename>
+git commit -m "write what has been done"
+git push origin main 
+
+%to uppmax 
+ssh olno6840@rackham.uppmax.uu.se
+
+
