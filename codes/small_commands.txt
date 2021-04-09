@@ -17,7 +17,7 @@ $ salloc -A g2021012 -M snowy -p core -n 2 -t 00:00:00 --reservation=<code>
 exit 
 
 %see how job runs 
-
+jobinfo -M snowy -u olno6840
 
 %remove all file in map
 %stand in map 
