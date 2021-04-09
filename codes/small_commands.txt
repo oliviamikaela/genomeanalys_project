@@ -7,4 +7,18 @@ git push origin main
 %to uppmax 
 ssh olno6840@rackham.uppmax.uu.se
 
+%run batch job 
+sbatch <file.sh>
 
+%Connect to working node 
+$ salloc -A g2021012 -M snowy -p core -n 2 -t 00:00:00 --reservation=<code>
+
+%exit working node 
+exit 
+
+%see how job runs 
+
+
+%remove all file in map
+%stand in map 
+rm -r * 
