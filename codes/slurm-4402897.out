@@ -274,3 +274,1421 @@ canu/2.0 has the useGrid option default set to useGrid=false. This can be overri
     ./precompute.sh 3 > ./precompute.000003.out 2>&1
     ./precompute.sh 4 > ./precompute.000004.out 2>&1
     ./precompute.sh 5 > ./precompute.000005.out 2>&1
+    ./precompute.sh 6 > ./precompute.000006.out 2>&1
+    ./precompute.sh 7 > ./precompute.000007.out 2>&1
+
+-- Finished on Fri Apr  9 12:55:33 2021 (5267 seconds) with 19378.396 GB free disk space
+----------------------------------------
+-- All 7 mhap precompute jobs finished successfully.
+-- No change in report.
+-- Finished stage 'cor-mhapPrecomputeCheck', reset canuIteration.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'cormhap' concurrent execution on Fri Apr  9 12:55:33 2021 with 19378.396 GB free disk space (13 processes; 1 concurrently)
+
+    cd correction/1-overlapper
+    ./mhap.sh 1 > ./mhap.000001.out 2>&1
+    ./mhap.sh 2 > ./mhap.000002.out 2>&1
+    ./mhap.sh 3 > ./mhap.000003.out 2>&1
+    ./mhap.sh 4 > ./mhap.000004.out 2>&1
+    ./mhap.sh 5 > ./mhap.000005.out 2>&1
+    ./mhap.sh 6 > ./mhap.000006.out 2>&1
+    ./mhap.sh 7 > ./mhap.000007.out 2>&1
+    ./mhap.sh 8 > ./mhap.000008.out 2>&1
+    ./mhap.sh 9 > ./mhap.000009.out 2>&1
+    ./mhap.sh 10 > ./mhap.000010.out 2>&1
+    ./mhap.sh 11 > ./mhap.000011.out 2>&1
+    ./mhap.sh 12 > ./mhap.000012.out 2>&1
+    ./mhap.sh 13 > ./mhap.000013.out 2>&1
+
+-- Finished on Fri Apr  9 13:03:18 2021 (465 seconds) with 19375.785 GB free disk space
+----------------------------------------
+-- Found 13 mhap overlap output files.
+-- No change in report.
+-- Finished stage 'cor-mhapCheck', reset canuIteration.
+----------------------------------------
+-- Starting command on Fri Apr  9 13:03:18 2021 with 19375.785 GB free disk space
+
+    cd correction
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/ovStoreConfig \
+     -S ../genome_assembly.seqStore \
+     -M 4-8 \
+     -L ./1-overlapper/ovljob.files \
+     -create ./genome_assembly.ovlStore.config \
+     > ./genome_assembly.ovlStore.config.txt \
+    2> ./genome_assembly.ovlStore.config.err
+
+-- Finished on Fri Apr  9 13:03:18 2021 (lickety-split) with 19375.785 GB free disk space
+----------------------------------------
+--
+-- Creating overlap store correction/genome_assembly.ovlStore using:
+--      2 buckets
+--      2 slices
+--        using at most 1 GB memory each
+-- No change in report.
+-- Finished stage 'cor-overlapStoreConfigure', reset canuIteration.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'ovB' concurrent execution on Fri Apr  9 13:03:18 2021 with 19375.785 GB free disk space (2 processes; 16 concurrently)
+
+    cd correction/genome_assembly.ovlStore.BUILDING
+    ./scripts/1-bucketize.sh 1 > ./logs/1-bucketize.000001.out 2>&1
+    ./scripts/1-bucketize.sh 2 > ./logs/1-bucketize.000002.out 2>&1
+
+-- Finished on Fri Apr  9 13:03:21 2021 (3 seconds) with 19375.627 GB free disk space
+----------------------------------------
+-- Overlap store bucketizer finished.
+-- No change in report.
+-- Finished stage 'cor-overlapStoreBucketizerCheck', reset canuIteration.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'ovS' concurrent execution on Fri Apr  9 13:03:21 2021 with 19375.627 GB free disk space (2 processes; 15 concurrently)
+
+    cd correction/genome_assembly.ovlStore.BUILDING
+    ./scripts/2-sort.sh 1 > ./logs/2-sort.000001.out 2>&1
+    ./scripts/2-sort.sh 2 > ./logs/2-sort.000002.out 2>&1
+
+-- Finished on Fri Apr  9 13:03:25 2021 (4 seconds) with 19375.473 GB free disk space
+----------------------------------------
+-- Overlap store sorter finished.
+-- No change in report.
+-- Finished stage 'cor-overlapStoreSorterCheck', reset canuIteration.
+----------------------------------------
+-- Starting command on Fri Apr  9 13:03:25 2021 with 19375.473 GB free disk space
+
+    cd correction
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/ovStoreIndexer \
+      -O  ./genome_assembly.ovlStore.BUILDING \
+      -S ../genome_assembly.seqStore \
+      -C  ./genome_assembly.ovlStore.config \
+      -delete \
+    > ./genome_assembly.ovlStore.BUILDING.index.err 2>&1
+
+-- Finished on Fri Apr  9 13:03:25 2021 (in the blink of an eye) with 19375.464 GB free disk space
+----------------------------------------
+-- Checking store.
+----------------------------------------
+-- Starting command on Fri Apr  9 13:03:25 2021 with 19375.464 GB free disk space
+
+    cd correction
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/ovStoreDump \
+     -S ../genome_assembly.seqStore \
+     -O  ./genome_assembly.ovlStore \
+     -counts \
+     > ./genome_assembly.ovlStore/counts.dat 2> ./genome_assembly.ovlStore/counts.err
+
+-- Finished on Fri Apr  9 13:03:25 2021 (like a bat out of hell) with 19375.463 GB free disk space
+----------------------------------------
+--
+-- Overlap store 'correction/genome_assembly.ovlStore' successfully constructed.
+-- Found 7361444 overlaps for 88970 reads; 11866 reads have no overlaps.
+--
+--
+-- Purged 1.777 GB in 33 overlap output files.
+-- No change in report.
+-- Finished stage 'cor-createOverlapStore', reset canuIteration.
+-- Set corMinCoverage=4 based on read coverage of 177.
+-- Global filter scores will be estimated.
+-- Computing correction layouts.
+----------------------------------------
+-- Starting command on Fri Apr  9 13:03:26 2021 with 19375.455 GB free disk space
+
+    cd correction
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/generateCorrectionLayouts \
+      -S ../genome_assembly.seqStore \
+      -O  ./genome_assembly.ovlStore \
+      -C  ./genome_assembly.corStore.WORKING \
+      -eC 80 \
+    > ./genome_assembly.corStore.err 2>&1
+
+-- Finished on Fri Apr  9 13:03:28 2021 (2 seconds) with 19375.343 GB free disk space
+----------------------------------------
+-- No change in report.
+-- Finished stage 'cor-buildCorrectionLayoutsConfigure', reset canuIteration.
+-- Computing correction layouts.
+----------------------------------------
+-- Starting command on Fri Apr  9 13:03:28 2021 with 19375.343 GB free disk space
+
+    cd correction/2-correction
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/filterCorrectionLayouts \
+      -S  ../../genome_assembly.seqStore \
+      -C     ../genome_assembly.corStore \
+      -R      ./genome_assembly.readsToCorrect.WORKING \
+      -cc 4 \
+      -cl 1000 \
+      -g  3000000 \
+      -c  40 \
+    > ./genome_assembly.readsToCorrect.err 2>&1
+
+-- Finished on Fri Apr  9 13:03:29 2021 (one second) with 19375.335 GB free disk space
+----------------------------------------
+--                             original      original
+--                            raw reads     raw reads
+--   category                w/overlaps  w/o/overlaps
+--   -------------------- ------------- -------------
+--   Number of Reads              79679         21157
+--   Number of Bases          431412510      42607561
+--   Coverage                   143.804        14.203
+--   Median                        4836             0
+--   Mean                          5414          2013
+--   N50                           6974          6178
+--   Minimum                       1000             0
+--   Maximum                      21204         20592
+--   
+--                                        --------corrected---------  ----------rescued----------
+--                             evidence                     expected                     expected
+--   category                     reads            raw     corrected            raw     corrected
+--   -------------------- -------------  ------------- -------------  ------------- -------------
+--   Number of Reads              77865          12762         12762            371           371
+--   Number of Bases          429041434      126910357     120005175        1676230        788420
+--   Coverage                   143.014         42.303        40.002          0.559         0.263
+--   Median                        4943           9367          8836           3678          1816
+--   Mean                          5510           9944          9403           4518          2125
+--   N50                           7001           9896          9206           6223          2390
+--   Minimum                       1000           7285          7281           1093          1001
+--   Maximum                      20948          19923         18422          17911          5821
+--   
+--                        --------uncorrected--------
+--                                           expected
+--   category                       raw     corrected
+--   -------------------- ------------- -------------
+--   Number of Reads              87703         87703
+--   Number of Bases          345433484     184869223
+--   Coverage                   115.144        61.623
+--   Median                        3586          1202
+--   Mean                          3938          2107
+--   N50                           5760          4975
+--   Minimum                          0             0
+--   Maximum                      21204         18970
+--   
+--   Maximum Memory           714635102
+-- Report changed.
+-- Finished stage 'cor-filterCorrectionLayouts', reset canuIteration.
+-- Using overlaps no worse than 0.3 fraction error for correcting reads (from corErrorRate parameter).
+--
+-- Configuring correction jobs:
+--   Jobs limited to 8 GB per job (via option corMemory).
+--   Reads estimated to need at most 1 GB for computation.
+--   Leaving 7 GB memory for read data.
+----------------------------------------
+-- Starting command on Fri Apr  9 13:03:29 2021 with 19375.335 GB free disk space
+
+    cd correction/2-correction
+    ./correctReadsPartition.sh \
+    > ./correctReadsPartition.err 2>&1
+
+-- Finished on Fri Apr  9 13:03:29 2021 (fast as lightning) with 19375.335 GB free disk space
+----------------------------------------
+-- Using overlaps no worse than 0.3 fraction error for correcting reads (from corErrorRate parameter).
+-- No change in report.
+-- Finished stage 'cor-generateCorrectedReadsConfigure', reset canuIteration.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'cor' concurrent execution on Fri Apr  9 13:03:29 2021 with 19375.335 GB free disk space (2 processes; 4 concurrently)
+
+    cd correction/2-correction
+    ./correctReads.sh 1 > ./correctReads.000001.out 2>&1
+    ./correctReads.sh 2 > ./correctReads.000002.out 2>&1
+
+-- Finished on Fri Apr  9 14:00:22 2021 (3413 seconds) with 19353.873 GB free disk space
+----------------------------------------
+-- Found 2 read correction output files.
+-- No change in report.
+-- Finished stage 'cor-generateCorrectedReadsCheck', reset canuIteration.
+-- Found 2 read correction output files.
+-- No change in report.
+-- Finished stage 'cor-generateCorrectedReadsCheck', reset canuIteration.
+--
+-- Loading corrected reads into corStore and seqStore.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:00:22 2021 with 19353.873 GB free disk space
+
+    cd correction
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/loadCorrectedReads \
+      -S ../genome_assembly.seqStore \
+      -C ./genome_assembly.corStore \
+      -L ./2-correction/corjob.files \
+    >  ./genome_assembly.loadCorrectedReads.log \
+    2> ./genome_assembly.loadCorrectedReads.err
+
+-- Finished on Fri Apr  9 14:00:25 2021 (3 seconds) with 19353.84 GB free disk space
+----------------------------------------
+----------------------------------------
+-- Starting command on Fri Apr  9 14:00:25 2021 with 19353.839 GB free disk space
+
+    cd .
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/sqStoreDumpMetaData \
+      -S ./genome_assembly.seqStore \
+      -corrected \
+      -histogram \
+      -lengths \
+    > ./genome_assembly.seqStore/readlengths-obt.dat \
+    2> ./genome_assembly.seqStore/readlengths-obt.err 
+    
+
+-- Finished on Fri Apr  9 14:00:25 2021 (like a bat out of hell) with 19353.838 GB free disk space
+----------------------------------------
+----------------------------------------
+-- Starting command on Fri Apr  9 14:00:26 2021 with 19353.837 GB free disk space
+
+    cd .
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/sqStoreDumpMetaData \
+      -S ./genome_assembly.seqStore \
+      -corrected \
+      -histogram \
+    > ./genome_assembly.seqStore/readlengths-obt.txt \
+    2> ./genome_assembly.seqStore/readlengths-obt.err 
+    
+
+-- Finished on Fri Apr  9 14:00:26 2021 (lickety-split) with 19353.837 GB free disk space
+----------------------------------------
+--
+-- In sequence store './genome_assembly.seqStore':
+--   Found 12867 reads.
+--   Found 110711585 bases (36.9 times coverage).
+--    
+--    G=110711585                        sum of  ||               length     num
+--    NG         length     index       lengths  ||                range    seqs
+--    ----- ------------ --------- ------------  ||  ------------------- -------
+--    00010        12305       811     11081364  ||          5-363             2|-
+--    00020        10826      1774     22148694  ||        364-722             4|-
+--    00030         9933      2843     33213939  ||        723-1081           59|---
+--    00040         9220      4002     44291112  ||       1082-1440           90|----
+--    00050         8656      5243     55363517  ||       1441-1799           52|--
+--    00060         8229      6555     66427405  ||       1800-2158           52|--
+--    00070         7842      7935     77502744  ||       2159-2517           46|--
+--    00080         7472      9382     88576157  ||       2518-2876           28|--
+--    00090         7150     10895     99641050  ||       2877-3235           36|--
+--    00100            5     12866    110711585  ||       3236-3594           27|--
+--    001.000x               12867    110711585  ||       3595-3953           25|-
+--                                               ||       3954-4312           32|--
+--                                               ||       4313-4671           37|--
+--                                               ||       4672-5030           39|--
+--                                               ||       5031-5389           40|--
+--                                               ||       5390-5748           49|--
+--                                               ||       5749-6107           62|---
+--                                               ||       6108-6466           94|----
+--                                               ||       6467-6825          311|------------
+--                                               ||       6826-7184         1045|----------------------------------------
+--                                               ||       7185-7543         1646|---------------------------------------------------------------
+--                                               ||       7544-7902         1385|------------------------------------------------------
+--                                               ||       7903-8261         1258|-------------------------------------------------
+--                                               ||       8262-8620         1113|-------------------------------------------
+--                                               ||       8621-8979          856|---------------------------------
+--                                               ||       8980-9338          680|---------------------------
+--                                               ||       9339-9697          616|------------------------
+--                                               ||       9698-10056         510|--------------------
+--                                               ||      10057-10415         447|------------------
+--                                               ||      10416-10774         403|----------------
+--                                               ||      10775-11133         305|------------
+--                                               ||      11134-11492         239|----------
+--                                               ||      11493-11851         234|---------
+--                                               ||      11852-12210         188|--------
+--                                               ||      12211-12569         164|-------
+--                                               ||      12570-12928         151|------
+--                                               ||      12929-13287         124|-----
+--                                               ||      13288-13646          99|----
+--                                               ||      13647-14005          70|---
+--                                               ||      14006-14364          65|---
+--                                               ||      14365-14723          39|--
+--                                               ||      14724-15082          39|--
+--                                               ||      15083-15441          29|--
+--                                               ||      15442-15800          29|--
+--                                               ||      15801-16159          22|-
+--                                               ||      16160-16518          10|-
+--                                               ||      16519-16877           6|-
+--                                               ||      16878-17236           6|-
+--                                               ||      17237-17595           0|
+--                                               ||      17596-17954           4|-
+--    
+--
+-- Purging correctReads output after loading into stores.
+-- Purged 2 .cns outputs.
+-- Purged 4 .out job log outputs.
+--
+-- Purging overlaps used for correction.
+-- Report changed.
+-- Finished stage 'cor-loadCorrectedReads', reset canuIteration.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:00:26 2021 with 19353.835 GB free disk space
+
+    cd .
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/sqStoreDumpFASTQ \
+      -corrected \
+      -S ./genome_assembly.seqStore \
+      -o ./genome_assembly.correctedReads.gz \
+      -fasta \
+      -nolibname \
+    > genome_assembly.correctedReads.fasta.err 2>&1
+
+-- Finished on Fri Apr  9 14:00:29 2021 (3 seconds) with 19353.782 GB free disk space
+----------------------------------------
+--
+-- Corrected reads saved in 'genome_assembly.correctedReads.fasta.gz'.
+-- No change in report.
+-- Finished stage 'cor-dumpCorrectedReads', reset canuIteration.
+--
+--
+-- BEGIN TRIMMING
+--
+-- No change in report.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:00:29 2021 with 19353.782 GB free disk space
+
+    cd trimming/0-mercounts
+    ./meryl-configure.sh \
+    > ./meryl-configure.err 2>&1
+
+-- Finished on Fri Apr  9 14:00:29 2021 (fast as lightning) with 19353.782 GB free disk space
+----------------------------------------
+--  segments   memory batches
+--  -------- -------- -------
+--        01  0.50 GB       1
+--
+--  For 12867 reads with 110711585 bases, limit to 1 batch.
+--  Will count kmers using 01 jobs, each using 2 GB and 4 threads.
+--
+-- No change in report.
+-- Finished stage 'merylConfigure', reset canuIteration.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'meryl' concurrent execution on Fri Apr  9 14:00:29 2021 with 19353.782 GB free disk space (1 processes; 4 concurrently)
+
+    cd trimming/0-mercounts
+    ./meryl-count.sh 1 > ./meryl-count.000001.out 2>&1
+
+-- Finished on Fri Apr  9 14:00:45 2021 (16 seconds) with 19353.585 GB free disk space
+----------------------------------------
+-- Found 1 Kmer counting (meryl) outputs.
+-- No change in report.
+-- Finished stage 'obt-merylCountCheck', reset canuIteration.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'meryl' concurrent execution on Fri Apr  9 14:00:45 2021 with 19353.585 GB free disk space (1 processes; 4 concurrently)
+
+    cd trimming/0-mercounts
+    ./meryl-process.sh 1 > ./meryl-process.000001.out 2>&1
+
+-- Finished on Fri Apr  9 14:01:07 2021 (22 seconds) with 19353.198 GB free disk space
+----------------------------------------
+-- Meryl finished successfully.  Kmer frequency histogram:
+--
+--  22-mers                                                                                           Fraction
+--    Occurrences   NumMers                                                                         Unique Total
+--       1-     1         0                                                                        0.0000 0.0000
+--       2-     2    275187 ****************************************                               0.0839 0.0052
+--       3-     4    130303 *******************                                                    0.1095 0.0075
+--       5-     7    102503 ***************                                                        0.1343 0.0109
+--       8-    11    187205 ***************************                                            0.1662 0.0179
+--      12-    16    236664 **********************************                                     0.2270 0.0377
+--      17-    22    290997 ******************************************                             0.2987 0.0710
+--      23-    29    361214 *****************************************************                  0.3859 0.1259
+--      30-    37    476447 ********************************************************************** 0.5008 0.2222
+--      38-    46    475752 *********************************************************************  0.6440 0.3742
+--      47-    56    395262 **********************************************************             0.7877 0.5648
+--      57-    67    220310 ********************************                                       0.9029 0.7503
+--      68-    79     68862 **********                                                             0.9640 0.8675
+--      80-    92     17967 **                                                                     0.9825 0.9093
+--      93-   106      9617 *                                                                      0.9876 0.9229
+--     107-   121      6616                                                                        0.9903 0.9311
+--     122-   137      6862 *                                                                      0.9924 0.9390
+--     138-   154      1597                                                                        0.9943 0.9462
+--     155-   172       904                                                                        0.9948 0.9483
+--     173-   191      2500                                                                        0.9951 0.9499
+--     192-   211       810                                                                        0.9958 0.9540
+--     212-   232      1649                                                                        0.9960 0.9555
+--     233-   254      1102                                                                        0.9966 0.9590
+--     255-   277      1355                                                                        0.9969 0.9614
+--     278-   301       669                                                                        0.9973 0.9648
+--     302-   326      1418                                                                        0.9975 0.9667
+--     327-   352       302                                                                        0.9979 0.9708
+--     353-   379       656                                                                        0.9980 0.9717
+--     380-   407      2313                                                                        0.9982 0.9742
+--     408-   436      1850                                                                        0.9989 0.9828
+--     437-   466        32                                                                        0.9995 0.9899
+--     467-   497        31                                                                        0.9995 0.9900
+--     498-   529        59                                                                        0.9995 0.9901
+--     530-   562       115                                                                        0.9995 0.9904
+--     563-   596       468                                                                        0.9995 0.9910
+--     597-   631       231                                                                        0.9997 0.9936
+--     632-   667       392                                                                        0.9998 0.9949
+--     668-   704       290                                                                        0.9999 0.9973
+--     705-   742        56                                                                        1.0000 0.9992
+--     743-   781         8                                                                        1.0000 0.9995
+--     782-   821         6                                                                        1.0000 0.9996
+--
+--           0 (max occurrences)
+--   106276379 (total mers, non-unique)
+--     3280612 (distinct mers, non-unique)
+--           0 (unique mers)
+-- Report changed.
+-- Finished stage 'meryl-process', reset canuIteration.
+--
+-- Removing meryl database 'trimming/0-mercounts/genome_assembly.ms22'.
+--
+-- OVERLAPPER (normal) (trimming) erate=0.045
+--
+----------------------------------------
+-- Starting command on Fri Apr  9 14:01:07 2021 with 19353.198 GB free disk space
+
+    cd trimming/1-overlapper
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/overlapInCorePartition \
+     -S  ../../genome_assembly.seqStore \
+     -hl 80000000 \
+     -rl 1000000000 \
+     -ol 500 \
+     -o  ./genome_assembly.partition \
+    > ./genome_assembly.partition.err 2>&1
+
+-- Finished on Fri Apr  9 14:01:07 2021 (lickety-split) with 19353.198 GB free disk space
+----------------------------------------
+--
+-- Configured 2 overlapInCore jobs.
+-- No change in report.
+-- Finished stage 'obt-overlapConfigure', reset canuIteration.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'obtovl' concurrent execution on Fri Apr  9 14:01:07 2021 with 19353.198 GB free disk space (2 processes; 2 concurrently)
+
+    cd trimming/1-overlapper
+    ./overlap.sh 1 > ./overlap.000001.out 2>&1
+    ./overlap.sh 2 > ./overlap.000002.out 2>&1
+
+-- Finished on Fri Apr  9 14:07:01 2021 (354 seconds) with 19373.929 GB free disk space
+----------------------------------------
+-- Found 2 overlapInCore output files.
+--
+-- overlapInCore compute 'trimming/1-overlapper':
+--   kmer hits
+--     with no overlap          3456484     1728242 +- 142836.984
+--     with an overlap          1150012      575006 +- 28123.05
+--
+--   overlaps                   1149989    574994.5 +- 28123.758
+--     contained                      0           0 +- 0
+--     dovetail                       0           0 +- 0
+--
+--   overlaps rejected
+--     multiple per pair              0           0 +- 0
+--     bad short window               0           0 +- 0
+--     bad long window                0           0 +- 0
+-- No change in report.
+-- Finished stage 'obt-overlapCheck', reset canuIteration.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:07:01 2021 with 19373.929 GB free disk space
+
+    cd trimming
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/ovStoreConfig \
+     -S ../genome_assembly.seqStore \
+     -M 3 \
+     -L ./1-overlapper/ovljob.files \
+     -create ./genome_assembly.ovlStore.config \
+     > ./genome_assembly.ovlStore.config.txt \
+    2> ./genome_assembly.ovlStore.config.err
+
+-- Finished on Fri Apr  9 14:07:01 2021 (like a bat out of hell) with 19373.929 GB free disk space
+----------------------------------------
+--
+-- Creating overlap store trimming/genome_assembly.ovlStore using:
+--      2 buckets
+--      2 slices
+--        using at most 1 GB memory each
+-- No change in report.
+-- Finished stage 'obt-overlapStoreConfigure', reset canuIteration.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'ovB' concurrent execution on Fri Apr  9 14:07:01 2021 with 19373.928 GB free disk space (2 processes; 16 concurrently)
+
+    cd trimming/genome_assembly.ovlStore.BUILDING
+    ./scripts/1-bucketize.sh 1 > ./logs/1-bucketize.000001.out 2>&1
+    ./scripts/1-bucketize.sh 2 > ./logs/1-bucketize.000002.out 2>&1
+
+-- Finished on Fri Apr  9 14:07:02 2021 (one second) with 19373.889 GB free disk space
+----------------------------------------
+-- Overlap store bucketizer finished.
+-- No change in report.
+-- Finished stage 'obt-overlapStoreBucketizerCheck', reset canuIteration.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'ovS' concurrent execution on Fri Apr  9 14:07:02 2021 with 19373.889 GB free disk space (2 processes; 15 concurrently)
+
+    cd trimming/genome_assembly.ovlStore.BUILDING
+    ./scripts/2-sort.sh 1 > ./logs/2-sort.000001.out 2>&1
+    ./scripts/2-sort.sh 2 > ./logs/2-sort.000002.out 2>&1
+
+-- Finished on Fri Apr  9 14:07:04 2021 (2 seconds) with 19373.835 GB free disk space
+----------------------------------------
+-- Overlap store sorter finished.
+-- No change in report.
+-- Finished stage 'obt-overlapStoreSorterCheck', reset canuIteration.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:07:04 2021 with 19373.835 GB free disk space
+
+    cd trimming
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/ovStoreIndexer \
+      -O  ./genome_assembly.ovlStore.BUILDING \
+      -S ../genome_assembly.seqStore \
+      -C  ./genome_assembly.ovlStore.config \
+      -delete \
+    > ./genome_assembly.ovlStore.BUILDING.index.err 2>&1
+
+-- Finished on Fri Apr  9 14:07:04 2021 (lickety-split) with 19373.826 GB free disk space
+----------------------------------------
+-- Checking store.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:07:04 2021 with 19373.826 GB free disk space
+
+    cd trimming
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/ovStoreDump \
+     -S ../genome_assembly.seqStore \
+     -O  ./genome_assembly.ovlStore \
+     -counts \
+     > ./genome_assembly.ovlStore/counts.dat 2> ./genome_assembly.ovlStore/counts.err
+
+-- Finished on Fri Apr  9 14:07:04 2021 (in the blink of an eye) with 19373.825 GB free disk space
+----------------------------------------
+--
+-- Overlap store 'trimming/genome_assembly.ovlStore' successfully constructed.
+-- Found 2300024 overlaps for 12863 reads; 87973 reads have no overlaps.
+--
+--
+-- Purged 0.021 GB in 6 overlap output files.
+-- No change in report.
+-- Finished stage 'obt-createOverlapStore', reset canuIteration.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:07:04 2021 with 19373.825 GB free disk space
+
+    cd trimming/3-overlapbasedtrimming
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/trimReads \
+      -S  ../../genome_assembly.seqStore \
+      -O  ../genome_assembly.ovlStore \
+      -Co ./genome_assembly.1.trimReads.clear \
+      -e  0.045 \
+      -minlength 1000 \
+      -ol 500 \
+      -oc 2 \
+      -o  ./genome_assembly.1.trimReads \
+    >     ./genome_assembly.1.trimReads.err 2>&1
+
+-- Finished on Fri Apr  9 14:07:06 2021 (2 seconds) with 19373.82 GB free disk space
+----------------------------------------
+--  PARAMETERS:
+--  ----------
+--     1000    (reads trimmed below this many bases are deleted)
+--   0.0450    (use overlaps at or below this fraction error)
+--      500    (break region if overlap is less than this long, for 'largest covered' algorithm)
+--        2    (break region if overlap coverage is less than this many reads, for 'largest covered' algorithm)
+--  
+--  INPUT READS:
+--  -----------
+--  100836 reads    110711585 bases (reads processed)
+--       0 reads            0 bases (reads not processed, previously deleted)
+--       0 reads            0 bases (reads not processed, in a library where trimming isn't allowed)
+--  
+--  OUTPUT READS:
+--  ------------
+--   11426 reads     94176892 bases (trimmed reads output)
+--    1381 reads     11259943 bases (reads with no change, kept as is)
+--   87973 reads         3938 bases (reads with no overlaps, deleted)
+--      56 reads        65442 bases (reads with short trimmed length, deleted)
+--  
+--  TRIMMING DETAILS:
+--  ----------------
+--    7300 reads      2121394 bases (bases trimmed from the 5' end of a read)
+--    9508 reads      3083976 bases (bases trimmed from the 3' end of a read)
+-- Report changed.
+-- Finished stage 'obt-trimReads', reset canuIteration.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:07:06 2021 with 19373.82 GB free disk space
+
+    cd trimming/3-overlapbasedtrimming
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/splitReads \
+      -S  ../../genome_assembly.seqStore \
+      -O  ../genome_assembly.ovlStore \
+      -Ci ./genome_assembly.1.trimReads.clear \
+      -Co ./genome_assembly.2.splitReads.clear \
+      -e  0.045 \
+      -minlength 1000 \
+      -o  ./genome_assembly.2.splitReads \
+    >     ./genome_assembly.2.splitReads.err 2>&1
+
+-- Finished on Fri Apr  9 14:07:07 2021 (one second) with 19373.819 GB free disk space
+----------------------------------------
+--  PARAMETERS:
+--  ----------
+--     1000    (reads trimmed below this many bases are deleted)
+--   0.0450    (use overlaps at or below this fraction error)
+--  INPUT READS:
+--  -----------
+--   12807 reads    110642205 bases (reads processed)
+--   88029 reads        69380 bases (reads not processed, previously deleted)
+--       0 reads            0 bases (reads not processed, in a library where trimming isn't allowed)
+--  
+--  PROCESSED:
+--  --------
+--       0 reads            0 bases (no overlaps)
+--       0 reads            0 bases (no coverage after adjusting for trimming done already)
+--       0 reads            0 bases (processed for chimera)
+--       0 reads            0 bases (processed for spur)
+--   12807 reads    110642205 bases (processed for subreads)
+--  
+--  READS WITH SIGNALS:
+--  ------------------
+--       0 reads            0 signals (number of 5' spur signal)
+--       0 reads            0 signals (number of 3' spur signal)
+--       0 reads            0 signals (number of chimera signal)
+--      24 reads           24 signals (number of subread signal)
+--  
+--  SIGNALS:
+--  -------
+--       0 reads            0 bases (size of 5' spur signal)
+--       0 reads            0 bases (size of 3' spur signal)
+--       0 reads            0 bases (size of chimera signal)
+--      24 reads         8927 bases (size of subread signal)
+--  
+--  TRIMMING:
+--  --------
+--       7 reads        30981 bases (trimmed from the 5' end of the read)
+--      17 reads        74630 bases (trimmed from the 3' end of the read)
+-- Report changed.
+-- Finished stage 'obt-splitReads', reset canuIteration.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:07:07 2021 with 19373.819 GB free disk space
+
+    cd trimming/3-overlapbasedtrimming
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/loadTrimmedReads \
+      -S ../../genome_assembly.seqStore \
+      -c ./genome_assembly.2.splitReads.clear \
+    > ./genome_assembly.loadTrimmedReads.err 2>&1
+
+-- Finished on Fri Apr  9 14:07:08 2021 (one second) with 19377.474 GB free disk space
+----------------------------------------
+----------------------------------------
+-- Starting command on Fri Apr  9 14:07:08 2021 with 19377.474 GB free disk space
+
+    cd .
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/sqStoreDumpMetaData \
+      -S ./genome_assembly.seqStore \
+      -corrected -trimmed \
+      -histogram \
+      -lengths \
+    > ./genome_assembly.seqStore/readlengths-utg.dat \
+    2> ./genome_assembly.seqStore/readlengths-utg.err 
+    
+
+-- Finished on Fri Apr  9 14:07:08 2021 (fast as lightning) with 19377.473 GB free disk space
+----------------------------------------
+----------------------------------------
+-- Starting command on Fri Apr  9 14:07:08 2021 with 19377.473 GB free disk space
+
+    cd .
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/sqStoreDumpMetaData \
+      -S ./genome_assembly.seqStore \
+      -corrected -trimmed \
+      -histogram \
+    > ./genome_assembly.seqStore/readlengths-utg.txt \
+    2> ./genome_assembly.seqStore/readlengths-utg.err 
+    
+
+-- Finished on Fri Apr  9 14:07:08 2021 (fast as lightning) with 19377.473 GB free disk space
+----------------------------------------
+--
+-- In sequence store './genome_assembly.seqStore':
+--   Found 12807 reads.
+--   Found 105331224 bases (35.11 times coverage).
+--    
+--    G=105331224                        sum of  ||               length     num
+--    NG         length     index       lengths  ||                range    seqs
+--    ----- ------------ --------- ------------  ||  ------------------- -------
+--    00010        11406       829     10536873  ||       1004-1324           92|----
+--    00020        10192      1812     21068443  ||       1325-1645           47|--
+--    00030         9383      2891     31606902  ||       1646-1966           46|--
+--    00040         8793      4051     42137747  ||       1967-2287           47|--
+--    00050         8338      5282     52666768  ||       2288-2608           35|--
+--    00060         7958      6576     63205653  ||       2609-2929           23|-
+--    00070         7607      7930     73738846  ||       2930-3250           41|--
+--    00080         7290      9345     84269717  ||       3251-3571           34|--
+--    00090         6917     10823     94801379  ||       3572-3892           26|--
+--    00100         1004     12806    105331224  ||       3893-4213           44|--
+--    001.000x               12807    105331224  ||       4214-4534           58|---
+--                                               ||       4535-4855           74|----
+--                                               ||       4856-5176           82|----
+--                                               ||       5177-5497           87|----
+--                                               ||       5498-5818          125|------
+--                                               ||       5819-6139          174|--------
+--                                               ||       6140-6460          242|-----------
+--                                               ||       6461-6781          417|------------------
+--                                               ||       6782-7102          892|-------------------------------------
+--                                               ||       7103-7423         1519|---------------------------------------------------------------
+--                                               ||       7424-7744         1320|-------------------------------------------------------
+--                                               ||       7745-8065         1210|---------------------------------------------------
+--                                               ||       8066-8386         1040|--------------------------------------------
+--                                               ||       8387-8707          877|-------------------------------------
+--                                               ||       8708-9028          693|-----------------------------
+--                                               ||       9029-9349          598|-------------------------
+--                                               ||       9350-9670          488|---------------------
+--                                               ||       9671-9991          434|------------------
+--                                               ||       9992-10312         366|----------------
+--                                               ||      10313-10633         323|--------------
+--                                               ||      10634-10954         257|-----------
+--                                               ||      10955-11275         189|--------
+--                                               ||      11276-11596         174|--------
+--                                               ||      11597-11917         142|------
+--                                               ||      11918-12238         110|-----
+--                                               ||      12239-12559         112|-----
+--                                               ||      12560-12880          78|----
+--                                               ||      12881-13201          75|----
+--                                               ||      13202-13522          57|---
+--                                               ||      13523-13843          36|--
+--                                               ||      13844-14164          35|--
+--                                               ||      14165-14485          26|--
+--                                               ||      14486-14806          12|-
+--                                               ||      14807-15127          16|-
+--                                               ||      15128-15448          13|-
+--                                               ||      15449-15769           9|-
+--                                               ||      15770-16090           5|-
+--                                               ||      16091-16411           4|-
+--                                               ||      16412-16732           2|-
+--                                               ||      16733-17053           1|-
+--    
+--
+-- Purging overlaps used for trimming.
+-- Report changed.
+-- Finished stage 'obt-dumpReads', reset canuIteration.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:07:08 2021 with 19377.473 GB free disk space
+
+    cd .
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/sqStoreDumpFASTQ \
+      -trimmed \
+      -S ./genome_assembly.seqStore \
+      -o ./genome_assembly.trimmedReads.gz \
+      -fasta \
+      -trimmed -normal -nolibname \
+    > ./genome_assembly.trimmedReads.fasta.err 2>&1
+
+-- Finished on Fri Apr  9 14:07:11 2021 (3 seconds) with 19377.399 GB free disk space
+----------------------------------------
+--
+-- Trimmed reads saved in 'genome_assembly.trimmedReads.fasta.gz'.
+-- No change in report.
+-- Finished stage 'cor-dumpTrimmedReads', reset canuIteration.
+--
+--
+-- BEGIN ASSEMBLY
+--
+-- No change in report.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:07:11 2021 with 19377.399 GB free disk space
+
+    cd unitigging/0-mercounts
+    ./meryl-configure.sh \
+    > ./meryl-configure.err 2>&1
+
+-- Finished on Fri Apr  9 14:07:11 2021 (in the blink of an eye) with 19377.399 GB free disk space
+----------------------------------------
+--  segments   memory batches
+--  -------- -------- -------
+--        01  0.44 GB       1
+--
+--  For 12807 reads with 105331224 bases, limit to 1 batch.
+--  Will count kmers using 01 jobs, each using 2 GB and 4 threads.
+--
+-- No change in report.
+-- Finished stage 'merylConfigure', reset canuIteration.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'meryl' concurrent execution on Fri Apr  9 14:07:11 2021 with 19377.399 GB free disk space (1 processes; 4 concurrently)
+
+    cd unitigging/0-mercounts
+    ./meryl-count.sh 1 > ./meryl-count.000001.out 2>&1
+
+-- Finished on Fri Apr  9 14:07:26 2021 (15 seconds) with 19380.619 GB free disk space
+----------------------------------------
+-- Found 1 Kmer counting (meryl) outputs.
+-- No change in report.
+-- Finished stage 'utg-merylCountCheck', reset canuIteration.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'meryl' concurrent execution on Fri Apr  9 14:07:26 2021 with 19380.619 GB free disk space (1 processes; 4 concurrently)
+
+    cd unitigging/0-mercounts
+    ./meryl-process.sh 1 > ./meryl-process.000001.out 2>&1
+
+-- Finished on Fri Apr  9 14:07:48 2021 (22 seconds) with 19384.834 GB free disk space
+----------------------------------------
+-- Meryl finished successfully.  Kmer frequency histogram:
+--
+--  22-mers                                                                                           Fraction
+--    Occurrences   NumMers                                                                         Unique Total
+--       1-     1         0                                                                        0.0000 0.0000
+--       2-     2    225104 ********************************                                       0.0702 0.0044
+--       3-     4    113985 ****************                                                       0.0922 0.0065
+--       5-     7    100890 **************                                                         0.1161 0.0098
+--       8-    11    197206 ****************************                                           0.1501 0.0174
+--      12-    16    244746 **********************************                                     0.2145 0.0387
+--      17-    22    300184 ******************************************                             0.2910 0.0750
+--      23-    29    396238 ********************************************************               0.3841 0.1347
+--      30-    37    490644 ********************************************************************** 0.5123 0.2440
+--      38-    46    483306 ********************************************************************   0.6617 0.4054
+--      47-    56    374540 *****************************************************                  0.8103 0.6057
+--      57-    67    179918 *************************                                              0.9200 0.7850
+--      68-    79     45583 ******                                                                 0.9712 0.8848
+--      80-    92     16307 **                                                                     0.9837 0.9136
+--      93-   106      7280 *                                                                      0.9884 0.9264
+--     107-   121      9772 *                                                                      0.9906 0.9331
+--     122-   137      2470                                                                        0.9937 0.9444
+--     138-   154      1133                                                                        0.9944 0.9470
+--     155-   172      2095                                                                        0.9947 0.9485
+--     173-   191      1636                                                                        0.9954 0.9522
+--     192-   211      1546                                                                        0.9959 0.9548
+--     212-   232      1151                                                                        0.9963 0.9579
+--     233-   254       677                                                                        0.9967 0.9605
+--     255-   277      1303                                                                        0.9969 0.9620
+--     278-   301      1086                                                                        0.9973 0.9655
+--     302-   326       888                                                                        0.9977 0.9687
+--     327-   352       269                                                                        0.9979 0.9712
+--     353-   379      1482                                                                        0.9980 0.9721
+--     380-   407      3054                                                                        0.9985 0.9778
+--     408-   436       178                                                                        0.9994 0.9894
+--     437-   466        29                                                                        0.9995 0.9899
+--     467-   497        43                                                                        0.9995 0.9900
+--     498-   529        73                                                                        0.9995 0.9903
+--     530-   562       289                                                                        0.9995 0.9906
+--     563-   596       365                                                                        0.9996 0.9922
+--     597-   631       342                                                                        0.9997 0.9942
+--     632-   667       345                                                                        0.9998 0.9964
+--     668-   704       164                                                                        0.9999 0.9985
+--     705-   742         7                                                                        1.0000 0.9996
+--     743-   781        10                                                                        1.0000 0.9996
+--     782-   821         2                                                                        1.0000 0.9997
+--
+--           0 (max occurrences)
+--   101988996 (total mers, non-unique)
+--     3206368 (distinct mers, non-unique)
+--           0 (unique mers)
+-- Report changed.
+-- Finished stage 'meryl-process', reset canuIteration.
+--
+-- Removing meryl database 'unitigging/0-mercounts/genome_assembly.ms22'.
+--
+-- OVERLAPPER (normal) (assembly) erate=0.045
+--
+----------------------------------------
+-- Starting command on Fri Apr  9 14:07:48 2021 with 19384.833 GB free disk space
+
+    cd unitigging/1-overlapper
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/overlapInCorePartition \
+     -S  ../../genome_assembly.seqStore \
+     -hl 80000000 \
+     -rl 1000000000 \
+     -ol 500 \
+     -o  ./genome_assembly.partition \
+    > ./genome_assembly.partition.err 2>&1
+
+-- Finished on Fri Apr  9 14:07:48 2021 (in the blink of an eye) with 19384.833 GB free disk space
+----------------------------------------
+--
+-- Configured 2 overlapInCore jobs.
+-- No change in report.
+-- Finished stage 'utg-overlapConfigure', reset canuIteration.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'utgovl' concurrent execution on Fri Apr  9 14:07:48 2021 with 19384.833 GB free disk space (2 processes; 2 concurrently)
+
+    cd unitigging/1-overlapper
+    ./overlap.sh 1 > ./overlap.000001.out 2>&1
+    ./overlap.sh 2 > ./overlap.000002.out 2>&1
+
+-- Finished on Fri Apr  9 14:17:43 2021 (595 seconds) with 19427.671 GB free disk space
+----------------------------------------
+-- Found 2 overlapInCore output files.
+--
+-- overlapInCore compute 'unitigging/1-overlapper':
+--   kmer hits
+--     with no overlap          3752534     1876267 +- 409689.183
+--     with an overlap           507043    253521.5 +- 51060.887
+--
+--   overlaps                    507043    253521.5 +- 51060.887
+--     contained                  66681     33340.5 +- 6424.065
+--     dovetail                  440362      220181 +- 44636.822
+--
+--   overlaps rejected
+--     multiple per pair              0           0 +- 0
+--     bad short window               0           0 +- 0
+--     bad long window                0           0 +- 0
+-- No change in report.
+-- Finished stage 'utg-overlapCheck', reset canuIteration.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:17:43 2021 with 19427.671 GB free disk space
+
+    cd unitigging
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/ovStoreConfig \
+     -S ../genome_assembly.seqStore \
+     -M 3 \
+     -L ./1-overlapper/ovljob.files \
+     -create ./genome_assembly.ovlStore.config \
+     > ./genome_assembly.ovlStore.config.txt \
+    2> ./genome_assembly.ovlStore.config.err
+
+-- Finished on Fri Apr  9 14:17:43 2021 (like a bat out of hell) with 19427.671 GB free disk space
+----------------------------------------
+--
+-- Creating overlap store unitigging/genome_assembly.ovlStore using:
+--      2 buckets
+--      2 slices
+--        using at most 1 GB memory each
+-- No change in report.
+-- Finished stage 'utg-overlapStoreConfigure', reset canuIteration.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'ovB' concurrent execution on Fri Apr  9 14:17:43 2021 with 19427.671 GB free disk space (2 processes; 16 concurrently)
+
+    cd unitigging/genome_assembly.ovlStore.BUILDING
+    ./scripts/1-bucketize.sh 1 > ./logs/1-bucketize.000001.out 2>&1
+    ./scripts/1-bucketize.sh 2 > ./logs/1-bucketize.000002.out 2>&1
+
+-- Finished on Fri Apr  9 14:17:44 2021 (one second) with 19427.653 GB free disk space
+----------------------------------------
+-- Overlap store bucketizer finished.
+-- No change in report.
+-- Finished stage 'utg-overlapStoreBucketizerCheck', reset canuIteration.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'ovS' concurrent execution on Fri Apr  9 14:17:44 2021 with 19427.653 GB free disk space (2 processes; 15 concurrently)
+
+    cd unitigging/genome_assembly.ovlStore.BUILDING
+    ./scripts/2-sort.sh 1 > ./logs/2-sort.000001.out 2>&1
+    ./scripts/2-sort.sh 2 > ./logs/2-sort.000002.out 2>&1
+
+-- Finished on Fri Apr  9 14:17:45 2021 (one second) with 19427.623 GB free disk space
+----------------------------------------
+-- Overlap store sorter finished.
+-- No change in report.
+-- Finished stage 'utg-overlapStoreSorterCheck', reset canuIteration.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:17:45 2021 with 19427.623 GB free disk space
+
+    cd unitigging
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/ovStoreIndexer \
+      -O  ./genome_assembly.ovlStore.BUILDING \
+      -S ../genome_assembly.seqStore \
+      -C  ./genome_assembly.ovlStore.config \
+      -delete \
+    > ./genome_assembly.ovlStore.BUILDING.index.err 2>&1
+
+-- Finished on Fri Apr  9 14:17:45 2021 (lickety-split) with 19427.615 GB free disk space
+----------------------------------------
+-- Checking store.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:17:45 2021 with 19427.615 GB free disk space
+
+    cd unitigging
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/ovStoreDump \
+     -S ../genome_assembly.seqStore \
+     -O  ./genome_assembly.ovlStore \
+     -counts \
+     > ./genome_assembly.ovlStore/counts.dat 2> ./genome_assembly.ovlStore/counts.err
+
+-- Finished on Fri Apr  9 14:17:45 2021 (in the blink of an eye) with 19427.614 GB free disk space
+----------------------------------------
+--
+-- Overlap store 'unitigging/genome_assembly.ovlStore' successfully constructed.
+-- Found 1014086 overlaps for 12806 reads; 88030 reads have no overlaps.
+--
+--
+-- Purged 0.01 GB in 6 overlap output files.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:17:45 2021 with 19427.614 GB free disk space
+
+    cd unitigging
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/ovStoreStats \
+     -C 35 \
+     -S ../genome_assembly.seqStore \
+     -O  ./genome_assembly.ovlStore \
+     -o  ./genome_assembly.ovlStore \
+     > ./genome_assembly.ovlStore.summary.err 2>&1
+
+-- Finished on Fri Apr  9 14:17:46 2021 (one second) with 19427.611 GB free disk space
+----------------------------------------
+--
+-- Overlap store 'unitigging/genome_assembly.ovlStore' contains:
+--
+--   category            reads     %          read length        feature size or coverage  analysis
+--   ----------------  -------  -------  ----------------------  ------------------------  --------------------
+--   middle-missing          0    0.00        0.00 +- 0.00             0.00 +- 0.00       (bad trimming)
+--   middle-hump             2    0.02     3327.00 +- 1108.74        627.00 +- 886.71     (bad trimming)
+--   no-5-prime              6    0.05     5901.17 +- 3240.12        251.00 +- 419.42     (bad trimming)
+--   no-3-prime              2    0.02     4619.00 +- 2818.53         47.00 +- 53.74      (bad trimming)
+--   
+--   low-coverage          181    1.41     5320.81 +- 3366.90          7.01 +- 2.38       (easy to assemble, potential for lower quality consensus)
+--   unique               7651   59.74     8144.18 +- 2019.02         36.34 +- 10.38      (easy to assemble, perfect, yay)
+--   repeat-cont           287    2.24     7501.00 +- 1687.33         86.85 +- 31.79      (potential for consensus errors, no impact on assembly)
+--   repeat-dove            10    0.08    11803.80 +- 1122.63         81.04 +- 28.76      (hard to assemble, likely won't assemble correctly or even at all)
+--   
+--   span-repeat          1895   14.80     8657.55 +- 1915.43       3070.56 +- 2383.62    (read spans a large repeat, usually easy to assemble)
+--   uniq-repeat-cont     2287   17.86     7959.35 +- 1471.43                             (should be uniquely placed, low potential for consensus errors, no impact on assembly)
+--   uniq-repeat-dove      436    3.40    10740.38 +- 2033.64                             (will end contigs, potential to misassemble)
+--   uniq-anchor            49    0.38     9018.69 +- 1999.70       4021.73 +- 2392.38    (repeat read, with unique section, probable bad read)
+-- Report changed.
+-- Finished stage 'utg-createOverlapStore', reset canuIteration.
+--
+-- Loading read lengths.
+-- Loading number of overlaps per read.
+--
+-- Configure RED for 16gb memory.
+--                   Batches of at most (unlimited) reads.
+--                                      500000000 bases.
+--                   Expecting evidence of at most 536870912 bases per iteration.
+--
+--           Total                                               Reads                 Olaps Evidence
+--    Job   Memory      Read Range         Reads        Bases   Memory        Olaps   Memory   Memory  (Memory in MB)
+--   ---- -------- ------------------- --------- ------------ -------- ------------ -------- --------
+--      1 15950.29         1-100836        12867    105400604 12866.69      1014086    11.61  1024.00
+--   ---- -------- ------------------- --------- ------------ -------- ------------ -------- --------
+--                                                  105400604               1014086
+-- No change in report.
+-- Finished stage 'readErrorDetectionConfigure', reset canuIteration.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'red' concurrent execution on Fri Apr  9 14:17:46 2021 with 19427.493 GB free disk space (1 processes; 4 concurrently)
+
+    cd unitigging/3-overlapErrorAdjustment
+    ./red.sh 1 > ./red.000001.out 2>&1
+
+-- Finished on Fri Apr  9 14:18:51 2021 (65 seconds) with 19426.422 GB free disk space
+----------------------------------------
+-- Found 1 read error detection output files.
+-- No change in report.
+-- Finished stage 'readErrorDetectionCheck', reset canuIteration.
+--
+-- Loading read lengths.
+-- Loading number of overlaps per read.
+--
+-- Configure OEA for 8gb memory.
+--                   Batches of at most (unlimited) reads.
+--                                      300000000 bases.
+--
+--           Total                                               Reads                 Olaps  Adjusts
+--    Job   Memory      Read Range         Reads        Bases   Memory        Olaps   Memory   Memory  (Memory in MB)
+--   ---- -------- ------------------- --------- ------------ -------- ------------ -------- --------
+--      1  2515.57         1-100836        12867    105400604   108.91      1014086    30.95   327.72
+--   ---- -------- ------------------- --------- ------------ -------- ------------ -------- --------
+--                                                  105400604               1014086
+-- No change in report.
+-- Finished stage 'overlapErrorAdjustmentConfigure', reset canuIteration.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'oea' concurrent execution on Fri Apr  9 14:18:51 2021 with 19426.419 GB free disk space (1 processes; 15 concurrently)
+
+    cd unitigging/3-overlapErrorAdjustment
+    ./oea.sh 1 > ./oea.000001.out 2>&1
+
+-- Finished on Fri Apr  9 14:19:04 2021 (13 seconds) with 19426.369 GB free disk space
+----------------------------------------
+-- Found 1 overlap error adjustment output files.
+-- No change in report.
+-- Finished stage 'overlapErrorAdjustmentCheck', reset canuIteration.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:19:04 2021 with 19426.369 GB free disk space
+
+    cd unitigging/3-overlapErrorAdjustment
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/loadErates \
+      -S ../../genome_assembly.seqStore \
+      -O ../genome_assembly.ovlStore \
+      -L ./oea.files \
+    > ./oea.apply.err 2>&1
+
+-- Finished on Fri Apr  9 14:19:04 2021 (furiously fast) with 19426.367 GB free disk space
+----------------------------------------
+-- No report available.
+-- Report changed.
+-- Finished stage 'updateOverlapStore', reset canuIteration.
+-- Finished stage 'unitig', reset canuIteration.
+-- No change in report.
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'bat' concurrent execution on Fri Apr  9 14:19:04 2021 with 19426.367 GB free disk space (1 processes; 1 concurrently)
+
+    cd unitigging/4-unitigger
+    ./unitigger.sh 1 > ./unitigger.000001.out 2>&1
+
+-- Finished on Fri Apr  9 14:19:07 2021 (3 seconds) with 19426.356 GB free disk space
+----------------------------------------
+-- Unitigger finished successfully.
+-- Found, in version 1, after unitig construction:
+--   contigs:      8 sequences, total length 3149645 bp (including 0 repeats of total length 0 bp).
+--   bubbles:      1 sequences, total length 9794 bp.
+--   unassembled:  26 sequences, total length 129320 bp.
+--
+-- Contig sizes based on genome size 3mbp:
+--
+--            NG (bp)  LG (contigs)    sum (bp)
+--         ----------  ------------  ----------
+--     10     2781076             1     2781076
+--     20     2781076             1     2781076
+--     30     2781076             1     2781076
+--     40     2781076             1     2781076
+--     50     2781076             1     2781076
+--     60     2781076             1     2781076
+--     70     2781076             1     2781076
+--     80     2781076             1     2781076
+--     90     2781076             1     2781076
+--    100      224202             2     3005278
+--
+-- Report changed.
+-- Finished stage 'unitigCheck', reset canuIteration.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:19:07 2021 with 19426.356 GB free disk space
+
+    cd unitigging
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/utgcns \
+      -S ../genome_assembly.seqStore \
+      -T  ./genome_assembly.ctgStore 1 \
+      -partition 0.8 1 0.1 \
+    > ./genome_assembly.ctgStore/partitioning.log 2>&1
+
+-- Finished on Fri Apr  9 14:19:09 2021 (2 seconds) with 19426.299 GB free disk space
+----------------------------------------
+----------------------------------------
+-- Starting command on Fri Apr  9 14:19:09 2021 with 19426.299 GB free disk space
+
+    cd unitigging
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/utgcns \
+      -S ../genome_assembly.seqStore \
+      -T  ./genome_assembly.utgStore 1 \
+      -partition 0.8 1 0.1 \
+    > ./genome_assembly.utgStore/partitioning.log 2>&1
+
+-- Finished on Fri Apr  9 14:19:10 2021 (one second) with 19426.241 GB free disk space
+----------------------------------------
+-- Using slow alignment for consensus (iteration '0').
+-- Configured 2 contig and 2 unitig consensus jobs.
+-- No change in report.
+-- Finished stage 'consensusConfigure', reset canuIteration.
+--
+--                                (tag)Concurrency
+--                         (tag)Threads          |
+--                (tag)Memory         |          |
+--        (tag)             |         |          |       total usage      algorithm
+--        -------  ----------  --------   --------  --------------------  -----------------------------
+-- Local: cns        3.125 GB    4 CPUs x   4 jobs    12.500 GB  16 CPUs  (consensus)
+--
+-- No change in report.
+--
+-- Running jobs.  First attempt out of 2.
+----------------------------------------
+-- Starting 'cns' concurrent execution on Fri Apr  9 14:19:10 2021 with 19426.24 GB free disk space (4 processes; 4 concurrently)
+
+    cd unitigging/5-consensus
+    ./consensus.sh 1 > ./consensus.000001.out 2>&1
+    ./consensus.sh 2 > ./consensus.000002.out 2>&1
+    ./consensus.sh 3 > ./consensus.000003.out 2>&1
+    ./consensus.sh 4 > ./consensus.000004.out 2>&1
+
+-- Finished on Fri Apr  9 14:23:10 2021 (240 seconds) with 19419.219 GB free disk space
+----------------------------------------
+-- Using slow alignment for consensus (iteration '1').
+-- Configured 2 contig and 2 unitig consensus jobs.
+-- No change in report.
+-- All 4 consensus jobs finished successfully.
+-- No change in report.
+-- Finished stage 'consensusCheck', reset canuIteration.
+-- Using slow alignment for consensus (iteration '0').
+-- Configured 2 contig and 2 unitig consensus jobs.
+-- No change in report.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:23:10 2021 with 19419.219 GB free disk space
+
+    cd unitigging
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/tgStoreLoad \
+      -S ../genome_assembly.seqStore \
+      -T  ./genome_assembly.ctgStore 2 \
+      -L ./5-consensus/ctgcns.files \
+    > ./5-consensus/ctgcns.files.ctgStoreLoad.err 2>&1
+
+-- Finished on Fri Apr  9 14:23:11 2021 (one second) with 19419.212 GB free disk space
+----------------------------------------
+----------------------------------------
+-- Starting command on Fri Apr  9 14:23:11 2021 with 19419.212 GB free disk space
+
+    cd unitigging
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/tgStoreLoad \
+      -S ../genome_assembly.seqStore \
+      -T  ./genome_assembly.utgStore 2 \
+      -L ./5-consensus/utgcns.files \
+    > ./5-consensus/utgcns.files.utgStoreLoad.err 2>&1
+
+-- Finished on Fri Apr  9 14:23:11 2021 (like a bat out of hell) with 19419.205 GB free disk space
+----------------------------------------
+-- Purging consensus output after loading to ctgStore and/or utgStore.
+-- Purged 4 .cns outputs.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:23:11 2021 with 19419.205 GB free disk space
+
+    cd unitigging
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/tgStoreDump \
+      -S ../genome_assembly.seqStore \
+      -T ./genome_assembly.ctgStore 2 \
+      -sizes -s 3000000 \
+    > ./genome_assembly.ctgStore/seqDB.v002.sizes.txt
+sqStore_loadMetadata()-- Using 'corrected-trimmed' 0x10 reads.
+
+-- Finished on Fri Apr  9 14:23:11 2021 (furiously fast) with 19419.205 GB free disk space
+----------------------------------------
+-- Found, in version 2, after consensus generation:
+--   contigs:      8 sequences, total length 3143811 bp (including 0 repeats of total length 0 bp).
+--   bubbles:      1 sequences, total length 9787 bp.
+--   unassembled:  26 sequences, total length 129320 bp.
+--
+-- Contig sizes based on genome size 3mbp:
+--
+--            NG (bp)  LG (contigs)    sum (bp)
+--         ----------  ------------  ----------
+--     10     2775628             1     2775628
+--     20     2775628             1     2775628
+--     30     2775628             1     2775628
+--     40     2775628             1     2775628
+--     50     2775628             1     2775628
+--     60     2775628             1     2775628
+--     70     2775628             1     2775628
+--     80     2775628             1     2775628
+--     90     2775628             1     2775628
+--    100       40016             3     3039588
+--
+-- Report changed.
+-- Finished stage 'consensusLoad', reset canuIteration.
+-- No change in report.
+----------------------------------------
+-- Starting command on Fri Apr  9 14:23:11 2021 with 19419.204 GB free disk space
+
+    cd unitigging/4-unitigger
+    ./alignGFA.sh \
+    > alignGFA.err 2>&1
+
+-- Finished on Fri Apr  9 14:23:12 2021 (one second) with 19419.204 GB free disk space
+----------------------------------------
+----------------------------------------
+-- Starting command on Fri Apr  9 14:23:12 2021 with 19419.204 GB free disk space
+
+    cd .
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/tgStoreDump \
+      -S ./genome_assembly.seqStore \
+      -T ./unitigging/genome_assembly.ctgStore 2 \
+      -o ./genome_assembly.contigs \
+      -layout \
+    > ./genome_assembly.contigs.layout.err 2>&1
+
+-- Finished on Fri Apr  9 14:23:13 2021 (one second) with 19419.204 GB free disk space
+----------------------------------------
+----------------------------------------
+-- Starting command on Fri Apr  9 14:23:13 2021 with 19419.204 GB free disk space
+
+    cd .
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/tgStoreDump \
+      -S ./genome_assembly.seqStore \
+      -T ./unitigging/genome_assembly.utgStore 2 \
+      -o ./genome_assembly.unitigs \
+      -layout \
+    > ./genome_assembly.unitigs.layout.err 2>&1
+
+-- Finished on Fri Apr  9 14:23:13 2021 (in the blink of an eye) with 19419.204 GB free disk space
+----------------------------------------
+----------------------------------------
+-- Starting command on Fri Apr  9 14:23:13 2021 with 19419.204 GB free disk space
+
+    cd .
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/tgStoreDump \
+      -S ./genome_assembly.seqStore \
+      -T ./unitigging/genome_assembly.ctgStore 2 \
+      -consensus -fasta \
+      -unassembled \
+    > ./genome_assembly.unassembled.fasta
+    2> ./genome_assembly.unassembled.err
+sqStore_loadMetadata()-- Using 'corrected-trimmed' 0x10 reads.
+
+-- Finished on Fri Apr  9 14:23:13 2021 (in the blink of an eye) with 19419.204 GB free disk space
+----------------------------------------
+----------------------------------------
+-- Starting command on Fri Apr  9 14:23:13 2021 with 19419.204 GB free disk space
+
+    cd .
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/tgStoreDump \
+      -S ./genome_assembly.seqStore \
+      -T ./unitigging/genome_assembly.ctgStore 2 \
+      -consensus -fasta \
+      -contigs \
+    > ./genome_assembly.contigs.fasta
+    2> ./genome_assembly.contigs.err
+sqStore_loadMetadata()-- Using 'corrected-trimmed' 0x10 reads.
+
+-- Finished on Fri Apr  9 14:23:13 2021 (fast as lightning) with 19419.201 GB free disk space
+----------------------------------------
+----------------------------------------
+-- Starting command on Fri Apr  9 14:23:13 2021 with 19419.201 GB free disk space
+
+    cd .
+    /sw/bioinfo/canu/2.0/rackham/Linux-amd64/bin/tgStoreDump \
+      -S ./genome_assembly.seqStore \
+      -T ./unitigging/genome_assembly.utgStore 2 \
+      -consensus -fasta \
+      -contigs \
+    > ./genome_assembly.unitigs.fasta
+    2> ./genome_assembly.unitigs.err
+sqStore_loadMetadata()-- Using 'corrected-trimmed' 0x10 reads.
+
+-- Finished on Fri Apr  9 14:23:13 2021 (furiously fast) with 19419.198 GB free disk space
+----------------------------------------
+-- No change in report.
+-- Finished stage 'generateOutputs', reset canuIteration.
+--
+-- Assembly 'genome_assembly' finished in '/domus/h1/olno6840/genomeanalysis_project/analyses/01_genome_assembly'.
+--
+-- Summary saved in 'genome_assembly.report'.
+--
+-- Sequences saved:
+--   Contigs       -> 'genome_assembly.contigs.fasta'
+--   Unassembled   -> 'genome_assembly.unassembled.fasta'
+--   Unitigs       -> 'genome_assembly.unitigs.fasta'
+--
+-- Read layouts saved:
+--   Contigs       -> 'genome_assembly.contigs.layout'.
+--   Unitigs       -> 'genome_assembly.unitigs.layout'.
+--
+-- Graphs saved:
+--   Unitigs       -> 'genome_assembly.unitigs.gfa'.
+--
+-- Bye.

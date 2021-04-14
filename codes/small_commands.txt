@@ -22,3 +22,16 @@ jobinfo -M snowy -u olno6840
 %remove all file in map
 %stand in map 
 rm -r * 
+
+%unzip file 
+gunzip <file.gz>
+
+%Download ref genome from NCBI 
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/120/755/GCF_010120755.1_ASM1012075v1/GCF_010120755.1_ASM1012075v1_genomic.fna.gz
+%another file format 
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/120/755/GCF_010120755.1_ASM1012075v1/GCF_010120755.1_ASM1012075v1_genomic.gff.gz
+
+%Download related genome Enterococcus faecalis from NCBI 
+%refsec 
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/393/015/GCF_000393015.1_Ente_faec_T5_V1/GCF_000393015.1_Ente_faec_T5_V1_genomic.fna.gz
+
