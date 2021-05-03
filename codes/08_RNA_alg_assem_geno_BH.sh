@@ -12,6 +12,7 @@
 #Module load
 module load bioinfo-tools
 module load bwa
+module load samtools
 
 #Commands
 for i in {2..4}
@@ -29,7 +30,7 @@ do
 	~/genomeanalysis_project/analyses/08_RNA_alg_assem_geno/BH_bwa_aln/aln_pass2_${i}.sai \
 	~/genomeanalysis_project/raw_data/transcriptomics_data/RNA-Seq_BH/trim_paired_ERR179797${i}_pass_1.fastq.gz \
 	~/genomeanalysis_project/raw_data/transcriptomics_data/RNA-Seq_BH/trim_paired_ERR179797${i}_pass_2.fastq.gz \
-        > ~/genomeanalysis_project/analyses/08_RNA_alg_assem_geno/BH_bwa_sampe/aln_ERR179797${i}.sam 
+        | samtools sort -o ~/genomeanalysis_project/analyses/08_RNA_alg_assem_geno/BH_bwa_sampe/aln_ERR179797${i}.bam 
 done 
 
  
