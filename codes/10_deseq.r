@@ -20,6 +20,13 @@ res_p0.05_FC1[order(res_p0.05_FC1[["log2FoldChange"]]),]
 
 write.csv(as.data.frame(res_p0.05_FC1), file="~/genomeanalysis_project/analyses/10_deseq/res_p0.05_FC1.csv")
 
-png(file='~/genomeanalysis_project/analyses/10_deseq/plot_res_p0.05_FC1.png')
-plot(myres$log2FoldChange,-log10(myres$pvalue),pch=19,cex=0.3,xlab="Log2 FC",ylab="-log10(P-value)",col=ifelse(myres$pvalue<0.05&abs(myres$log2FoldChange)>1,"red","black"))
+#Plot Volcano plot
+#Already ran so comment away
+#png(file='~/genomeanalysis_project/analyses/10_deseq/plot_res_p0.05_FC1.png')
+#plot(myres$log2FoldChange,-log10(myres$pvalue),pch=19,cex=0.3,xlab="Log2 FC",ylab="-log10(P-value)",col=ifelse(myres$pvalue<0.05&abs(myres$log2FoldChange)>1,"red","black"))
+
+#Plot MA plot
+png(file='~/genomeanalysis_project/analyses/10_deseq/plotMA.png')
+plotMA(myres, alpha=0.05, ylim=c(-5,5))
+
 dev.off()
