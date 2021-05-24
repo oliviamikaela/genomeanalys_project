@@ -37,3 +37,7 @@ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/393/015/GCF_000393015.1_Ente
 
 %Download files from uppmax to local computer to be used in Komandotolken 
 scp olno6840@rackham.uppmax.uu.se:/home/olno6840/genomeanalysis_project/analyses/02_check_quality_RNA/serum/* C:\Users\Olivia960102\Documents\Genomeanalysis\RNA_serum
+
+%Download new ref genome so it maches the one in article 
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/750/885/GCF_001750885.1_ASM175088v1/GCF_001750885.1_ASM175088v1_cds_from_genomic.fna.gz
+
